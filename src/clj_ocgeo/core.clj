@@ -1,40 +1,54 @@
 (ns clj-ocgeo.core
   (:require [clojure.data.json :as json])
+  (:require [clojure.string :as string])
   (:require [clj-http.lite.client :as client]))
 
-(defn- when-update [x pred f & args]
-  (if (pred x)
-    (apply f x args)
-    x))
-
 (defn- build-qs [options]
-  (-> options 
-      (when-update #(true? (:abbrev %)) #(assoc % :abbrev 1))
-      (when-update #(true? (:no_annotations %)) #(assoc % :no_annotations 1))
-      (when-update #(true? (:no_dedupe %)) #(assoc % :no_dedupe 1))
-      (when-update #(true? (:no_record %)) #(assoc % :no_record 1))
-      (when-update #(true? (:roadinfo %)) #(assoc % :roadinfo 1))
-      (when-update #(not (empty? (:bounds %))) 
-                   #(assoc % :bounds (clojure.string/join "," (:bounds %))))
-      (when-update #(not (empty? (:proximity %)))
-                   #(assoc % :proximity (clojure.string/join "," (:proximity %))))))
+  (let [truthy? #(and % (not= 0 %))
+        bool-to-int #(if (truthy? %) 1 0)
+        vec-to-str #(string/join "," %)
+        when-update (fn [opts kw f]
+                      (if (truthy? (kw opts)) (update opts kw f) opts))]
+    (-> options
+        (when-update :abbrev bool-to-int)
+        (when-update :no_annotations bool-to-int)
+        (when-update :no_dedupe bool-to-int)
+        (when-update :no_record bool-to-int)
+        (when-update :roadinfo bool-to-int)
+        (when-update :add_request bool-to-int)
+        (when-update :bounds vec-to-str)
+        (when-update :proximity vec-to-str))))
 
-(defn make-request [query api-key & {:keys [abbrev bounds countrycode 
-                                            language limit min_confidence
-                                            no_annotations no_dedupe
-                                            no_record proximity roadinfo]
-                                     :or {abbrev false ;bounds countrycode 
-                                          bounds []
-                                          limit 10
-                                          no_annotations false}
-                                     :as options}]
+(defn forward-request
+  "Makes forward geocoding request which given an address or
+   place name returns its coordinates and optional annotations."
+  [query api-key & {:keys [abbrev bounds countrycode
+                           language limit min_confidence
+                           no_annotations no_dedupe
+                           no_record proximity roadinfo
+                           add_request]
+                    :as options}]
   (let [qs (-> options build-qs (merge {"q" query "key" api-key}))
         response (client/get "https://api.opencagedata.com/geocode/v1/json"
                              {:accept :json
+                              :save-request? true
                               :throw-exceptions false
-                              :query-params qs})]
-    (-> response :body (json/read-str :key-fn keyword))))
+                              :query-params qs})
+        url (-> response :request :http-url)]
+    (-> response :body (json/read-str :key-fn keyword) (assoc :URL url))))
 
-(defn response-ok? [response]
+
+(defn reverse-request
+  "Make a reverse request, i.e. given a latitude and a longitude
+   coordinates it returns a list of human understandable place names
+   or addresses"
+  [latitude longitude api-key & opts]
+  (apply forward-request (string/join "," [latitude, longitude]) api-key opts))
+
+
+(defn response-ok?
+  "Checks whether the request was successful i.e. the returned status is 200"
+  [response]
   (= 200 (-> response :status :code)))
+
 
