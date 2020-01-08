@@ -2,7 +2,8 @@
 
 A Clojure library for accessing the [OpenCage Geocoding API](https://opencagedata.com/)
 
-[![Clojars Project](https://img.shields.io/clojars/v/clj-ocgeo.svg)](https://clojars.org/clj-ocgeo) [![cljdoc badge](https://cljdoc.org/badge/clj-ocgeo/clj-ocgeo)](https://cljdoc.org/badge/clj-ocgeo/clj-ocgeo/CURRENT)
+[![Clojars Project](https://img.shields.io/clojars/v/clj-ocgeo.svg)](https://clojars.org/clj-ocgeo)
+[![cljdoc badge](https://cljdoc.org/badge/clj-ocgeo/clj-ocgeo)](https://cljdoc.org/d/clj-ocgeo/clj-ocgeo/0.2.1/)
 
 
 ## Getting started
@@ -10,7 +11,7 @@ A Clojure library for accessing the [OpenCage Geocoding API](https://opencagedat
 Simply add `clj-ocgeo` as a dependency to your lein project:
 
 ```clojure
-[clj-ocgeo "0.2.0"]
+[clj-ocgeo "0.2.1"]
 ```
 
 Then execute
