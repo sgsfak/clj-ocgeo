@@ -1,4 +1,4 @@
-(defproject clj-ocgeo "0.1.0"
+(defproject clj-ocgeo "0.2.0"
   :description "A Clojure library for accessing the OpenCage Geocoding API"
   :url "https://github.com/sgsfak/clj-ocgeo"
   :license {:name "MIT"

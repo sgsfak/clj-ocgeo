@@ -9,7 +9,7 @@ A Clojure library for accessing the [OpenCage Geocoding API](https://opencagedat
 Simply add `clj-ocgeo` as a dependency to your lein project:
 
 ```clojure
-[clj-ocgeo "0.1.0"]
+[clj-ocgeo "0.2.0"]
 ```
 
 Then execute
