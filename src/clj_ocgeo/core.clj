@@ -4,11 +4,12 @@
   (:require [clj-http.lite.client :as client]))
 
 (defn- build-qs [options]
-  (let [truthy? #(and % (not= 0 %))
+  (let [truthy? #(and % (not= 0 %) (not (empty? %)))
         bool-to-int #(if (truthy? %) 1 0)
         vec-to-str #(string/join "," %)
-        when-update (fn [opts kw f]
-                      (if (truthy? (kw opts)) (update opts kw f) opts))]
+        when-update (fn [opts kw f] (if (truthy? (kw opts))
+                                      (update opts kw f)
+                                      (dissoc opts kw)))]
     (-> options
         (when-update :abbrev bool-to-int)
         (when-update :no_annotations bool-to-int)
