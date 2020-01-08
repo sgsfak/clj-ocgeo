@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file. This change
 ## [Unreleased]
 ### Changed
 
-## [0.2.0] - 2020-01-06
+## [0.2.0] - 2020-01-08
 ### Changed
 - Use clj-http instead of clj-http-lite
 
@@ -12,5 +12,5 @@ All notable changes to this project will be documented in this file. This change
 ### Added
 - Initial version
 
-[Unreleased]: https://github.com/your-name/clj-ocgeo/compare/0.2.0...HEAD
-[0.2.0]: https://github.com/your-name/clj-ocgeo/compare/0.1.0...0.2.0
+[Unreleased]: https://github.com/sgsfak/clj-ocgeo/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/sgsfak/clj-ocgeo/compare/v0.1.0...v0.2.0
