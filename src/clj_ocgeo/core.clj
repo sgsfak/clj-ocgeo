@@ -1,7 +1,7 @@
 (ns clj-ocgeo.core
   (:require [clojure.data.json :as json])
   (:require [clojure.string :as string])
-  (:require [clj-http.lite.client :as client]))
+  (:require [clj-http.client :as client]))
 
 (defn- build-qs [options]
   (let [truthy? #(and % (not= 0 %) (not (empty? %)))

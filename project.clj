@@ -5,5 +5,5 @@
             :url "http://opensource.org/licenses/MIT"}
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.clojure/data.json "0.2.7"]
-                 [clj-http-lite "0.3.0"]]
+                 [clj-http "3.10.0"]]
   :repl-options {:init-ns clj-ocgeo.core})
